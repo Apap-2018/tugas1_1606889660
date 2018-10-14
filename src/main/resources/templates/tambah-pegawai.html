@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+	<title>Home</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class=" container container-fluid" th:object="${pegawai}">
+		<h3 th:text="'Lihat Data Pegawai - ' + *{nip}"> </h3>
+		<form th:action="@{/pegawai/tambah/}" th:object="${pegawai}" method="post">
+			<table class="table table-borderless">
+				<tbody>
+					<tr>
+						<td>Nama</td>
+						<td>
+							<input type="text" name="nama"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Tempat Lahir</td>
+						<td>
+							<input type="text" name="tempatLahir"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Tanggal Lahir</td>
+						<td>
+							<input type="date" name="tanggalLahir"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Tahun Masuk</td>
+						<td>
+							<input type="text" name="tahunMasuk"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Nama Instansi</td>
+						<td th:text="${pegawai.instansiPegawai.nama}"></td>
+					</tr>
+					<tr>
+						<td>Jabatan</td>
+						<td>
+							<ul th:each="j : ${jabatan}">
+								<li th:text="${j}"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>Gaji</td>
+						<td th:text="${gaji}"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<button class="btn btn-primary btn-lg" type="submit">Ubah</button>
+		</form>
+	</div>
+	
+		
+	
+</body>
+</html>

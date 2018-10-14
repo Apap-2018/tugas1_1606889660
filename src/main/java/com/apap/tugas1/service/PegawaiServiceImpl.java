@@ -1,0 +1,23 @@
+package com.apap.tugas1.service;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.apap.tugas1.model.PegawaiModel;
+import com.apap.tugas1.repository.PegawaiDB;
+
+@Service
+@Transactional
+public class PegawaiServiceImpl implements PegawaiService{
+	@Autowired
+	private PegawaiDB pegawaiDb;
+	
+	@Override
+	public PegawaiModel getPegawaiDetailByNip(String nip) {
+		return pegawaiDb.findByNip(nip);
+		
+	}
+	
+}
