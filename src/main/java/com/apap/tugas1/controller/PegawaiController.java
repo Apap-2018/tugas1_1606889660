@@ -6,24 +6,42 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+import com.apap.tugas1.model.InstansiModel;
 import com.apap.tugas1.model.JabatanModel;
 import com.apap.tugas1.model.JabatanPegawaiModel;
 import com.apap.tugas1.model.PegawaiModel;
+import com.apap.tugas1.model.ProvinsiModel;
+import com.apap.tugas1.service.InstansiService;
+import com.apap.tugas1.service.JabatanService;
 import com.apap.tugas1.service.PegawaiService;
+import com.apap.tugas1.service.ProvinsiService;
 
 @Controller
 public class PegawaiController {
 	@Autowired
 	private PegawaiService pegawaiService;
 	
+	@Autowired
+	private ProvinsiService provinsiService;
+	
+	@Autowired
+	private JabatanService jabatanService;
+	
+	@Autowired
+	private InstansiService instansiService;
+	
+	
 	@RequestMapping("/")
 	private String home(Model model) {
 		model.addAttribute("home", true);
+		List<JabatanModel> listJabatan = new ArrayList<>();
+		listJabatan = jabatanService.getAllJabatan();
+		model.addAttribute("jabatan", listJabatan);
 		return "home";
 	}
 	
@@ -53,10 +71,21 @@ public class PegawaiController {
 	}
 	
 	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.GET)
-	private String tambahPegawai(Model model, @ModelAttribute PegawaiModel pegawai) {
+	private String tambahPegawai(Model model) {
+		PegawaiModel pegawai = new PegawaiModel();
 		
+		List<InstansiModel> listInstansi = instansiService.getAllInstansi();
+		List<ProvinsiModel> listProvinsi = provinsiService.getAllProvinsi();
+		List<JabatanModel> listJabatan = jabatanService.getAllJabatan();
+		
+		model.addAttribute("pegawai", pegawai);
+		model.addAttribute("listInstansi", listInstansi);
+		model.addAttribute("listProvinsi", listProvinsi);
+		model.addAttribute("listJabatan", listJabatan);
 		model.addAttribute("tambahPegawai", true);
 		return "tambah-pegawai";
 	}
+	
+	
 
 }

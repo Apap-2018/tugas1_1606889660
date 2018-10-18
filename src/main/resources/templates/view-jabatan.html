@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+	<title>Lihat Jabatan</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class=" container container-fluid" th:object="${jabatan}">
+		<h3 th:text="'Detail Jabatan ' + *{nama}"> </h3>
+		<table class="table table-borderless" style="margin-left:auto; ">
+			<tbody>
+				
+				<tr>
+					<td>Nama</td>
+					<td th:text="*{nama}"></td>
+				</tr>
+				<tr>
+					<td>Deskripsi</td>
+					<td th:text="*{deskripsi}"></td>
+				</tr>
+				<tr>
+					<td>Gaji Pokok</td>
+					<td th:text="'Rp' + *{gajiPokok}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<form th:action="@{/jabatan/ubah}" class="col-md-3" method="get">
+            <input type="hidden" name="idJabatan" th:value="*{id}">
+            <button type="submit" class="btn btn-primary">Ubah Jabatan</button>
+        </form>
+        <form th:action="@{/jabatan/hapus}" class="col-md-3" method="post" >
+        	<input type="hidden" name="idJabatan" th:value="*{id}">
+            <button type="submit" class="btn">Hapus Jabatan</button>
+        </form>
+	</div>
+</body>
+</html>
