@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "pegawai")
-public class PegawaiModel implements Serializable {
+public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -134,6 +134,12 @@ public class PegawaiModel implements Serializable {
 
 	public void setJabatanPegawai(List<JabatanPegawaiModel> jabatanPegawai) {
 		this.jabatanPegawai = jabatanPegawai;
+	}
+
+
+	@Override
+	public int compareTo(PegawaiModel o) {
+		return this.tanggalLahir.compareTo(o.getTanggalLahir());
 	}
 	
 	

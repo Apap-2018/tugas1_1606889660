@@ -9,4 +9,6 @@ public interface InstansiService {
 	List<InstansiModel> getAllInstansi();
 
 	List<InstansiModel> getInstansiByProvinsi(ProvinsiModel provinsi);
+
+	InstansiModel getInstansiById(long idInstansi);
 }

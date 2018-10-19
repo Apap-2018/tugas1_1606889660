@@ -28,6 +28,12 @@ public class InstansiServiceImpl implements InstansiService{
 		return instansiDb.findByProvinsi(provinsi);
 		 
 	}
+
+	@Override
+	public InstansiModel getInstansiById(long idInstansi) {
+		return instansiDb.findById(idInstansi).get();
+		
+	}
 	
 
 }

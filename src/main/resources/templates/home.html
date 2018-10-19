@@ -37,8 +37,22 @@
 			<button class="btn btn-primary btn-md" type="submit">Lihat</button>
 		</form>
 	  </div>
+	  <div class="lead">
+	  	<form th:action="@{/pegawai/termuda-tertua}"  method="GET">
+		  	<div class="form-group">
+			    <label for="idInstansi">Pilih Instansi:</label>
+			    <br>
+				<select name = "idInstansi">
+				    <option th:each="i : ${listInstansi}" th:value="${i.id}" th:text="${i.nama}">
+				    </option>
+				</select>
+			</div>
+			<button class="btn btn-primary btn-md" type="submit">Lihat</button>
+		</form>
+	  </div>
+	  
 	</div>
-	</div>
+	
 	
 		
 	

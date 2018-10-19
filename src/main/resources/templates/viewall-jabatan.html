@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+	<title>Lihat Semua Jabatan</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class=" container container-fluid" >
+		<table class="table table-borderless display" id="viewAllJabatan" style="margin-left:auto; ">
+			<thead>
+				<tr>
+					<th>Nama</th>
+					<th>Deskripsi</th>
+					<th>Gaji Pokok</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="j : ${listJabatan}">
+					<td th:text="${j.nama}"></td>
+					<td th:text="${j.deskripsi}"></td>
+					<td th:text="${j.gajiPokok}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+<script th:inline="javascript">
+	$(document).ready(function() {
+	    $('#viewAllJabatan').DataTable();
+	} );
+</script>
+
+
+</html>

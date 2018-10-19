@@ -1,6 +1,7 @@
 package com.apap.tugas1.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,10 @@ public class PegawaiController {
 	private String home(Model model) {
 		model.addAttribute("home", true);
 		List<JabatanModel> listJabatan = new ArrayList<>();
+		List<InstansiModel> listInstansi = instansiService.getAllInstansi();
 		listJabatan = jabatanService.getAllJabatan();
 		model.addAttribute("jabatan", listJabatan);
+		model.addAttribute("listInstansi", listInstansi);
 		return "home";
 	}
 	
@@ -84,6 +87,51 @@ public class PegawaiController {
 		model.addAttribute("listJabatan", listJabatan);
 		model.addAttribute("tambahPegawai", true);
 		return "tambah-pegawai";
+	}
+	
+	
+	
+	@RequestMapping(value = "/pegawai/termuda-tertua", method = RequestMethod.GET)
+	private String termudaTertua(@RequestParam(value="idInstansi") long idInstansi, Model model) {
+		InstansiModel instansi = instansiService.getInstansiById(idInstansi);
+		List<PegawaiModel> listPegawai = instansi.getPegawaiInstansi();;
+		Collections.sort(listPegawai);
+		Collections.reverse(listPegawai);
+		PegawaiModel termuda = listPegawai.get(0);
+		PegawaiModel tertua = listPegawai.get(listPegawai.size()-1);
+		
+		double gajiTermuda = 0;
+		double gajiTertua = 0;
+		List<String> jabatanTermuda = new ArrayList<>();
+		List<String> jabatanTertua = new ArrayList<>();
+		
+		for(JabatanPegawaiModel jabatanPegawai : termuda.getJabatanPegawai()) {
+			double temp = 0;	
+			temp = jabatanPegawai.getIdJabatan().getGajiPokok();
+			jabatanTermuda.add(jabatanPegawai.getIdJabatan().getNama());
+			if(gajiTermuda < temp) {
+				gajiTermuda = temp;
+			}
+		}
+		for(JabatanPegawaiModel jabatanPegawai : tertua.getJabatanPegawai()) {
+			double temp = 0;	
+			temp = jabatanPegawai.getIdJabatan().getGajiPokok();
+			jabatanTertua.add(jabatanPegawai.getIdJabatan().getNama());
+			if(gajiTertua < temp) {
+				gajiTertua = temp;
+			}
+		
+		}
+		double persentunjangan = termuda.getInstansiPegawai().getProvinsiInstansi().getPresentaseTunjangan();
+		
+		model.addAttribute("termuda", termuda);
+		model.addAttribute("tertua", tertua);
+		model.addAttribute("gajiTermuda", "Rp"+ String.format("%.0f", gajiTermuda * persentunjangan/100 + gajiTermuda));
+		model.addAttribute("gajiTertua", "Rp"+ String.format("%.0f", gajiTertua * persentunjangan/100 + gajiTertua));
+		model.addAttribute("home", true);
+		model.addAttribute("jabatanTermuda", jabatanTermuda);
+		model.addAttribute("jabatanTertua", jabatanTertua);
+		return "termuda-tertua";
 	}
 	
 	

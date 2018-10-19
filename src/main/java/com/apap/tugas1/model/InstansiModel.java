@@ -89,5 +89,7 @@ public class InstansiModel implements Serializable {
 	public void setPegawaiInstansi(List<PegawaiModel> pegawaiInstansi) {
 		this.pegawai = pegawaiInstansi;
 	}
+
+	
 		
 }
