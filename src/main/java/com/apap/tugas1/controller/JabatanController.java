@@ -84,4 +84,5 @@ public class JabatanController {
 		return "viewall-jabatan";
 	}
 	
+	
 }

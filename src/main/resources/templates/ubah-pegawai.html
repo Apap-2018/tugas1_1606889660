@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymleaf.org">
 <head>
-	<title>Tambah Pegawai</title>
+	<title>Ubah Pegawai</title>
 	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
-	
+	<script th:inline="javascript">
+		var listProvinsi = /*[[${listProvinsi}]]*/;
+		var listInstansi = /*[[${listInstansi}]]*/;
+		console.log('test');
+	</script>
 	<script>
 		console.log('ulololo');
 	</script>
@@ -61,9 +65,7 @@
 							<div class= "form-group">
 								<select name="instansiPegawai" class="form-control" id="selectInstansi">
 									<option value="">Pilih Instansi</option>
-									<div th:each="p, iterationStat : ${listInstansi}">
-										<option th:text="${p.nama}" th:value="${p.id}"></option>
-									</div>
+									
 								</select>
 							</div>
 						</td> 
@@ -71,26 +73,21 @@
 					<tr>
 						<td>Jabatan</td>
 						<td>
-							
-							<select class="form-control" name="jabatanPegawai">
-								<div th:each="j : ${listJabatan}">
-									<option  th:value="${j.id}" th:text="${j.nama}"></option>
-								</div>
-								
-							</select>
-							
-							
-						
+							<div th:each="jabatan, iterStat : *{jabatanPegawai}">
+								<select class="form-control" name="jabatanPegawai">
+									<option th:each="j : ${listJabatan}" th:field="*{jabatanPegawai[__${iterStat.index}__]}" th:value="${j.id}" th:text="${j.nama}"></option>
+								</select>
+								<button type="submit" name="add" class="btn btn-primary">tambah jabatan</button>
+								<button type="submit" name="delete" class="btn" th:value="${iterStat.index}" th:style="${iterStat.count} == 1 ? 'display:none' : '' ">hapus jabatan</button>
+							</div>
 						</td>
 					</tr>
 					
 				</tbody>
-				
 			</table>
 			
-			<button class="btn btn-primary btn-lg" type="submit">Simpan</button>
+			<button class="btn btn-primary btn-lg" type="submit">Ubah</button>
 		</form>
 	</div>
 </body>
-	
 </html>

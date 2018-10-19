@@ -1,5 +1,6 @@
 package com.apap.tugas1.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,7 @@ import com.apap.tugas1.model.JabatanPegawaiModel;
 import com.apap.tugas1.model.PegawaiModel;
 import com.apap.tugas1.model.ProvinsiModel;
 import com.apap.tugas1.service.InstansiService;
+import com.apap.tugas1.service.JabatanPegawaiService;
 import com.apap.tugas1.service.JabatanService;
 import com.apap.tugas1.service.PegawaiService;
 import com.apap.tugas1.service.ProvinsiService;
@@ -35,6 +38,7 @@ public class PegawaiController {
 	
 	@Autowired
 	private InstansiService instansiService;
+	
 	
 	
 	@RequestMapping("/")
@@ -83,13 +87,47 @@ public class PegawaiController {
 		
 		model.addAttribute("pegawai", pegawai);
 		model.addAttribute("listInstansi", listInstansi);
+		System.out.println(listInstansi.size());
 		model.addAttribute("listProvinsi", listProvinsi);
 		model.addAttribute("listJabatan", listJabatan);
+		System.out.println(listJabatan.size());
 		model.addAttribute("tambahpegawai", true);
 		return "tambah-pegawai";
 	}
 	
-	
+	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST)
+	private String tambahPegawaiSubmit(@ModelAttribute PegawaiModel pegawai, Model model) {
+		
+		String kode = pegawai.getInstansiPegawai().getId() + "";
+		System.out.println(kode);
+		SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yy");
+		String tanggalLahir = newFormat.format(pegawai.getTanggalLahir()).replaceAll("-", "");
+		
+		String tahunKerja = pegawai.getTahunMasuk();
+		
+		int urutan = pegawaiService.getPegawaiByInstansiAndTanggalLahirAndTahunMasuk(pegawai.getInstansiPegawai(), pegawai.getTanggalLahir(), pegawai.getTahunMasuk()).size()+1;
+		
+		String strUrutan;
+		if(urutan<10) strUrutan="0"+urutan;
+		else strUrutan=""+urutan;
+		
+		
+		
+		String nip = kode + tanggalLahir + tahunKerja + strUrutan;
+		
+		pegawai.setNip(nip);
+		ProvinsiModel provinsi = provinsiService.getProvinsiById(Long.parseLong(kode.substring(0,2)));
+		InstansiModel instansi = instansiService.getInstansiById(pegawai.getInstansiPegawai().getId());
+		
+		instansi.setProvinsiInstansi(provinsi);
+		pegawai.setInstansiPegawai(instansi);
+		
+		pegawaiService.addPegawai(pegawai);
+		
+		String msg = "Pegawai dengan NIP "+ nip +" berhasil ditambahkan";
+		model.addAttribute("message", msg);
+		return "result";
+	}
 	
 	@RequestMapping(value = "/pegawai/termuda-tertua", method = RequestMethod.GET)
 	private String termudaTertua(@RequestParam(value="idInstansi") long idInstansi, Model model) {
@@ -133,6 +171,18 @@ public class PegawaiController {
 		model.addAttribute("jabatanTertua", jabatanTertua);
 		return "termuda-tertua";
 	}
+	
+	@RequestMapping(value = "/pegawai/cari")
+	private String cariPegawai(@RequestParam(value="idProvinsi", required=false) Long idProvinsi,
+								@RequestParam(value="idInstansi", required=false) Long idInstansi,
+								@RequestParam(value="idJabatan", required=false) Long idJabatan, Model model
+			) {
+		
+		model.addAttribute("listPegawai", pegawaiService.getAll());
+		model.addAttribute("caripegawai", true);
+		return "cari-pegawai";
+	}
+	
 	
 	
 

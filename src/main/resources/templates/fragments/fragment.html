@@ -40,7 +40,7 @@
 	        <a class="nav-link" th:href="@{/jabatan/tambah}">Tambah Jabatan</a>
 	      </li>
 	      <li class="nav-item" th:classappend="${caripegawai} ? 'active' : '' ">
-	        <a class="nav-link" href="#">Cari Pegawai</a>
+	        <a class="nav-link" th:href="@{/pegawai/cari}">Cari Pegawai</a>
 	      </li>
 	      <li class="nav-item" th:classappend="${lihatsemuajabatan} ? 'active' : '' ">
 	        <a class="nav-link" th:href="@{/jabatan/viewAll}">Lihat Semua Jabatan</a>

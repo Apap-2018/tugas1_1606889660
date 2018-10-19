@@ -35,7 +35,6 @@ public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 	
 	
 	@NotNull
-	@UniqueElements
 	@Size(max = 255)
 	@Column(name = "NIP", nullable = false, unique= true)
 	private String nip;

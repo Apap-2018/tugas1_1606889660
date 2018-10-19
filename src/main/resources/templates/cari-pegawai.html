@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+	<title>Cari Pegawai</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class=" container container-fluid" >
+		<form action="@{/pegawai/cari}" method="get">
+			
+		</form>
+		<table class="table table-borderless display" id="cariPegawai" style="margin-left:auto; ">
+			<thead>
+				<tr>
+					<th>NIP</th>
+					<th>Nama</th>
+					<th>Tempat Lahir</th>
+					<th>Tanggal lahir</th>
+					<th>Tahun masuk</th>
+					<th>Nama Provinsi</th>
+					<th>Jabatan</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="j : ${listPegawai}">
+					<td th:text="${j.nip}"></td>
+					<td th:text="${j.nama}"></td>
+					<td th:text="${j.tempatLahir}"></td>
+					<td th:text="${j.tanggalLahir}"></td>
+					<td th:text="${j.tahunMasuk}"></td>
+					<td th:text="${j.instansiPegawai.nama}"></td>
+					<td>
+						<ul th:each="j : ${j.jabatanPegawai}">
+							<li th:text="${j.idJabatan.nama}"></li>
+						</ul>
+					</td>
+					
+				</tr>
+			</tbody>
+			<tfoot>
+            	<tr>
+					<th>NIP</th>
+					<th>Nama</th>
+					<th>Tempat Lahir</th>
+					<th>Tanggal lahir</th>
+					<th>Tahun masuk</th>
+					<th>Nama Provinsi</th>
+					<th>Jabatan</th>
+				</tr>
+        	</tfoot>
+		</table>
+		
+	</div>
+</body>
+<script th:inline="javascript">
+$(document).ready(function() {
+    $('#cariPegawai').DataTable( {
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );
+	
+</script>
+
+
+</html>
