@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.apap.tugas1.model.JabatanModel;
+import com.apap.tugas1.model.JabatanPegawaiModel;
 import com.apap.tugas1.service.JabatanService;
 
 @Controller
@@ -35,7 +36,17 @@ public class JabatanController {
 	
 	@RequestMapping("/jabatan/view")
 	private String viewPegawai(@RequestParam(value = "idJabatan", required = true) long idJabatan, Model model) {
-		model.addAttribute("jabatan", jabatanService.findJabatanById(idJabatan));
+		JabatanModel jabatan = jabatanService.findJabatanById(idJabatan);
+		
+		model.addAttribute("jabatan", jabatan);
+		int count = 0;
+		for(JabatanPegawaiModel jp : jabatan.getPegawaiJabatan()) {
+			if(jp.getIdPegawai().getId() == idJabatan) {
+				count++;
+			}
+		}
+		model.addAttribute("jumlahPegawai", count);
+		
 		return "view-jabatan";
 	}
 	

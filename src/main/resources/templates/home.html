@@ -13,7 +13,7 @@
 	  <h1 class="display-3">Sistem Informasi Kepegawaian</h1>
 	  <p class="lead">Selamat Datang di Sistem Informasi Kepegawaian</p>
 	  <hr class="my-2">
-	  <p class="lead">Lihat data kepegawaian berdasarkan NIP</p>
+	  <h3 >Lihat data kepegawaian berdasarkan NIP</h3>
 	  <div class="lead">
 	  	<form th:action="@{/pegawai}"  method="GET">
 		  	<div class="form-group">
@@ -24,6 +24,8 @@
 			<button class="btn btn-primary btn-md" type="submit">Lihat</button>
 		</form>
 	  </div>
+	  <hr class="my-2">
+	  <h3 >Lihat detail jabatan</h3>
 	  <div class="lead">
 	  	<form th:action="@{/jabatan/view}"  method="GET">
 		  	<div class="form-group">
@@ -37,6 +39,8 @@
 			<button class="btn btn-primary btn-md" type="submit">Lihat</button>
 		</form>
 	  </div>
+	  <hr class="my-2">
+	  <h3 >Lihat pegawai termuda dan tertua di suatu instansi</h3>
 	  <div class="lead">
 	  	<form th:action="@{/pegawai/termuda-tertua}"  method="GET">
 		  	<div class="form-group">

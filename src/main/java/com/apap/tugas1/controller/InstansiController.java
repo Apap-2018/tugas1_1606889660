@@ -29,7 +29,10 @@ public class InstansiController {
 	@RequestMapping(value="/instansi/getInstansiFromProvinsi", method=RequestMethod.GET)
 	@ResponseBody
 	public List<InstansiModel> getInstansi(@RequestParam(value="idProvinsi", required=true) long idProvinsi){
+		System.out.println(idProvinsi);
 		ProvinsiModel provinsi = provinsiService.getProvinsiById(idProvinsi);
+		System.out.println(provinsi.getNama());
+		System.out.println(instansiService.getInstansiByProvinsi(provinsi));
 		return instansiService.getInstansiByProvinsi(provinsi);
 	}
 	

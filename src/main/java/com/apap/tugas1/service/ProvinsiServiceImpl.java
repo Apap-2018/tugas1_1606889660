@@ -23,7 +23,6 @@ public class ProvinsiServiceImpl implements ProvinsiService{
 
 	@Override
 	public ProvinsiModel getProvinsiById(long idProvinsi) {
-		// TODO Auto-generated method stub
 		return provinsiDb.findById(idProvinsi).get();
 	}
 	

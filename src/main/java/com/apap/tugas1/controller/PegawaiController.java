@@ -85,7 +85,7 @@ public class PegawaiController {
 		model.addAttribute("listInstansi", listInstansi);
 		model.addAttribute("listProvinsi", listProvinsi);
 		model.addAttribute("listJabatan", listJabatan);
-		model.addAttribute("tambahPegawai", true);
+		model.addAttribute("tambahpegawai", true);
 		return "tambah-pegawai";
 	}
 	

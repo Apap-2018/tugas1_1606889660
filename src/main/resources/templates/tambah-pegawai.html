@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymleaf.org">
 <head>
-	<title>Home</title>
+	<title>Tambah Pegawai</title>
 	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
@@ -9,7 +9,7 @@
 <body>
 	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<div class=" container container-fluid" th:object="${pegawai}">
-		<h3 th:text="'Lihat Data Pegawai - ' + *{nip}"> </h3>
+		<h3 th:text="'Tambah Pegawai'"> </h3>
 		<form th:action="@{/pegawai/tambah/}" th:object="${pegawai}" id="formPegawai" method="post">
 			<table class="table table-borderless">
 				<tbody>
