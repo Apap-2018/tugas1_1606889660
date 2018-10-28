@@ -1,6 +1,9 @@
 package com.apap.tugas1.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.apap.tugas1.model.JabatanModel;
 import com.apap.tugas1.model.JabatanPegawaiModel;
+import com.apap.tugas1.model.PegawaiModel;
+import com.apap.tugas1.service.JabatanPegawaiService;
 import com.apap.tugas1.service.JabatanService;
+import com.apap.tugas1.service.PegawaiService;
 
 @Controller
 public class JabatanController {
 	@Autowired
 	private JabatanService jabatanService;
+	
+	@Autowired
+	private PegawaiService pegawaiService;
 	
 	@RequestMapping(value="/jabatan/tambah",  method = RequestMethod.GET)
 	private String tambahJabatan(Model model) {
@@ -29,7 +38,7 @@ public class JabatanController {
 	
 	@RequestMapping(value = "/jabatan/tambah", method = RequestMethod.POST)
     private String tambahJabatanSubmit(@ModelAttribute JabatanModel jabatan, Model model) {
-        jabatanService.addJabatan(jabatan);
+        jabatanService.add(jabatan);
         model.addAttribute("message", "Jabatan berhasil ditambahkan");
         return "result";
     }
@@ -39,13 +48,9 @@ public class JabatanController {
 		JabatanModel jabatan = jabatanService.findJabatanById(idJabatan);
 		
 		model.addAttribute("jabatan", jabatan);
-		int count = 0;
-		for(JabatanPegawaiModel jp : jabatan.getPegawaiJabatan()) {
-			if(jp.getIdPegawai().getId() == idJabatan) {
-				count++;
-			}
-		}
-		model.addAttribute("jumlahPegawai", count);
+		
+		List<PegawaiModel> listPegawai = pegawaiService.getPegawaiByJabatan(jabatan); 
+		model.addAttribute("jumlahPegawai", listPegawai.size());
 		
 		return "view-jabatan";
 	}
@@ -58,7 +63,7 @@ public class JabatanController {
 	
 	@RequestMapping(value="/jabatan/ubah",  method = RequestMethod.POST )
 	private String ubahSubmit(@ModelAttribute JabatanModel jabatan, Model model){
-		jabatanService.addJabatan(jabatan);
+		jabatanService.add(jabatan);
 		model.addAttribute("message", "jabatan berhasil diubah");
 		return "result";
 	}
@@ -79,7 +84,14 @@ public class JabatanController {
 	@RequestMapping("/jabatan/viewAll")
 	private String viewAll(Model model) {
 		List<JabatanModel> listJabatan = jabatanService.getAllJabatan();
-		model.addAttribute("listJabatan", listJabatan);
+		Map<JabatanModel, Integer> listJumlahPegawaiDanJabatan = new HashMap<>();
+		 
+		
+		for(JabatanModel j : listJabatan) {
+			List<PegawaiModel> listPegawai = pegawaiService.getPegawaiByJabatan(j);
+			listJumlahPegawaiDanJabatan.put(j, listPegawai.size());
+		}
+		model.addAttribute("listJabatan", listJumlahPegawaiDanJabatan);
 		model.addAttribute("lihatsemuajabatan", true);
 		return "viewall-jabatan";
 	}

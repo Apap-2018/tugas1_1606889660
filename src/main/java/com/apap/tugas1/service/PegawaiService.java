@@ -5,18 +5,23 @@ import java.util.List;
 
 import com.apap.tugas1.model.InstansiModel;
 import com.apap.tugas1.model.JabatanModel;
-import com.apap.tugas1.model.JabatanPegawaiModel;
 import com.apap.tugas1.model.PegawaiModel;
 
 public interface PegawaiService {
+
 	PegawaiModel getPegawaiDetailByNip(String nip);
 
-	List<JabatanModel> getPegawaiByInstansiAndTanggalLahirAndTahunMasuk(InstansiModel instansiPegawai,
-			Date tanggalLahir, String tahunMasuk);
+	List<JabatanModel> getPegawaiByInstansiAndTanggalLahirAndTahunMasuk(InstansiModel instansi, Date tanggalLahir,
+			String tahunMasuk);
 
-	void addPegawai(PegawaiModel pegawai);
+	void add(PegawaiModel pegawai);
 
-	List<PegawaiModel> getPegawaiByInstansiAndJabatan(InstansiModel instansi, JabatanPegawaiModel jabatan);
+	List<PegawaiModel> getPegawaiByJabatan(JabatanModel jabatan);
 
 	List<PegawaiModel> getAll();
+
+	List<PegawaiModel> getPegawaiByJabatanAndInstansi(JabatanModel jabatan, InstansiModel instansi);
+
+	List<PegawaiModel> getPegawaiByInstansi(InstansiModel instansi);
+
 }

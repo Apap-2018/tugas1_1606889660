@@ -16,14 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
@@ -32,7 +30,6 @@ public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	
 	@NotNull
 	@Size(max = 255)
@@ -58,8 +55,6 @@ public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 	@Column(name = "tahun_masuk", nullable = false)
 	private String tahunMasuk;
 	
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<JabatanPegawaiModel> jabatanPegawai;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_instansi", referencedColumnName = "id", nullable = false)
@@ -67,12 +62,19 @@ public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 	@JsonIgnore
 	private InstansiModel instansi;
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "jabatan_pegawai", joinColumns = {@JoinColumn(name = "id_pegawai")}, inverseJoinColumns = {@JoinColumn(name = "id_jabatan")})
+	private List<JabatanModel> listJabatan = new ArrayList<JabatanModel>();
+
+	@Override
+	public int compareTo(PegawaiModel o) {
+		return this.tanggalLahir.compareTo(o.getTanggalLahir());
+	}
 
 	public long getId() {
 		return id;
 	}
-	
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -117,28 +119,44 @@ public class PegawaiModel implements Serializable, Comparable<PegawaiModel> {
 		this.tahunMasuk = tahunMasuk;
 	}
 
-	public InstansiModel getInstansiPegawai() {
+	public InstansiModel getInstansi() {
 		return instansi;
 	}
 
-	public void setInstansiPegawai(InstansiModel instansiPegawai) {
-		this.instansi = instansiPegawai;
+	public void setInstansi(InstansiModel instansi) {
+		this.instansi = instansi;
 	}
 
-
-	public List<JabatanPegawaiModel> getJabatanPegawai() {
-		return jabatanPegawai;
+	public List<JabatanModel> getListJabatan() {
+		return listJabatan;
 	}
 
-
-	public void setJabatanPegawai(List<JabatanPegawaiModel> jabatanPegawai) {
-		this.jabatanPegawai = jabatanPegawai;
+	public void setListJabatan(List<JabatanModel> listJabatan) {
+		this.listJabatan = listJabatan;
 	}
 
-
-	@Override
-	public int compareTo(PegawaiModel o) {
-		return this.tanggalLahir.compareTo(o.getTanggalLahir());
+	public double getGaji() {
+		double presentaseTunjangan = this.instansi.getProvinsi().getPresentaseTunjangan();
+		double gaji = this.listJabatan.get(0).getGajiPokok();
+		for (int i = 1 ; i < this.listJabatan.size(); i ++) {
+			double currGaji = this.listJabatan.get(i).getGajiPokok();
+			if(gaji < currGaji) {
+				gaji = currGaji;
+			}
+		}
+		
+		gaji = ((gaji * presentaseTunjangan /100) + gaji);
+		
+		return gaji;
+	}
+	
+	public List<String> getListJabatanString(){
+		List<String> listJabatanString = new ArrayList<>(); 
+		for(JabatanModel j : this.listJabatan) {
+			listJabatanString.add(j.getNama());
+		}
+		
+		return listJabatanString;
 	}
 	
 	

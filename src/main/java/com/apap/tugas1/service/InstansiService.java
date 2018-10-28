@@ -6,9 +6,11 @@ import com.apap.tugas1.model.InstansiModel;
 import com.apap.tugas1.model.ProvinsiModel;
 
 public interface InstansiService {
+
 	List<InstansiModel> getAllInstansi();
 
-	List<InstansiModel> getInstansiByProvinsi(ProvinsiModel provinsi);
+	List<InstansiModel> getInstansiByProvinsi(ProvinsiModel provinsiModel);
 
-	InstansiModel getInstansiById(long idInstansi);
+	InstansiModel getInstansiById(Long idInstansi);
+
 }

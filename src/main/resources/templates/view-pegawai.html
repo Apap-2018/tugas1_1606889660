@@ -8,17 +8,20 @@
 
 <body>
 	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<form th:action="@{/pegawai/ubah}">
 	<div class=" container container-fluid" th:object="${pegawai}">
 		<h3 th:text="'Lihat Data Pegawai - ' + *{nip}"> </h3>
+		<input type="hidden" th:value="*{nip}" name="nip"/>
+		
 		<table class="table table-borderless" style="margin-left:auto; ">
 			<tbody>
 				<tr>
 					<td>NIP</td>
-					<td th:text="*{nip}"></td>
+					<td th:text="*{nip}" ></td>
 				</tr>
 				<tr>
 					<td>Nama</td>
-					<td th:text="*{nama}"></td>
+					<td th:text="*{nama}" ></td>
 				</tr>
 				<tr>
 					<td>Tempat Lahir</td>
@@ -34,7 +37,7 @@
 				</tr>
 				<tr>
 					<td>Nama Instansi</td>
-					<td th:text="${pegawai.instansiPegawai.nama}"></td>
+					<td th:text="${pegawai.instansi.nama}"></td>
 				</tr>
 				<tr>
 					<td>Jabatan</td>
@@ -50,10 +53,10 @@
 				</tr>
 			</tbody>
 		</table>
-		<form th:action="@{/}">
-			<button class="btn btn-primary btn-lg" type="submit">Ubah</button>
-		</form>
-	</div>
+	</div>		
+	<button style="margin-left:10%" class="btn btn-primary btn-lg" type="submit">Ubah</button>
+	</form>
+	
 	
 		
 	

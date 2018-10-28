@@ -6,10 +6,11 @@
 	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<body>
+<body style="background-color:#e9ecef;">
 	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<div class=" container container-fluid" >
-		<table class="table table-borderless display" id="viewAllJabatan" style="margin-left:auto; ">
+		<br>
+		<table class="table table-borderless display" id="viewAllJabatan" style="margin-left:auto; margin-top:100px">
 			<thead>
 				<tr>
 					<th>Nama</th>
@@ -20,10 +21,10 @@
 			</thead>
 			<tbody>
 				<tr th:each="j : ${listJabatan}">
-					<td th:text="${j.nama}"></td>
-					<td th:text="${j.deskripsi}"></td>
-					<td th:text="${j.gajiPokok}"></td>
-					<td th:text="${#lists.size(j.pegawaiJabatan)}"></td>
+					<td th:text="${j.key.nama}"></td>
+					<td th:text="${j.key.deskripsi}"></td>
+					<td th:text="${j.key.gajiPokok}"></td>
+					<td th:text="${j.value}"></td>
 				</tr>
 			</tbody>
 		</table>

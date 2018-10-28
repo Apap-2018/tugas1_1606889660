@@ -19,7 +19,7 @@
 		  	<div class="form-group">
 			    <label for="nip">Masukkan Nomor Induk Pegawai:</label>
 			    <br>
-				<input type="text" name="nip"/>
+				<input type="text" class="form-control" style="width:20%; margin-left:40%" name="nip"/>
 			</div>
 			<button class="btn btn-primary btn-md" type="submit">Lihat</button>
 		</form>
@@ -31,7 +31,7 @@
 		  	<div class="form-group">
 			    <label for="idJabatan">Pilih Jabatan:</label>
 			    <br>
-				<select name = "idJabatan">
+				<select name = "idJabatan" class="form-control" style="width:20%; margin-left:40%">
 				    <option th:each="i : ${jabatan}" th:value="${i.id}" th:text="${i.nama}">
 				    </option>
 				</select>
@@ -46,7 +46,7 @@
 		  	<div class="form-group">
 			    <label for="idInstansi">Pilih Instansi:</label>
 			    <br>
-				<select name = "idInstansi">
+				<select name = "idInstansi" class="form-control" style="width:20%; margin-left:40%">
 				    <option th:each="i : ${listInstansi}" th:value="${i.id}" th:text="${i.nama}">
 				    </option>
 				</select>

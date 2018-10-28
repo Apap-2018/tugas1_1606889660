@@ -8,32 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.apap.tugas1.model.JabatanModel;
-import com.apap.tugas1.repository.JabatanDB;
+import com.apap.tugas1.repository.JabatanDb;
 
 @Service
 @Transactional
 public class JabatanServiceImpl implements JabatanService{
 	@Autowired
-	private JabatanDB jabatanDb;
+	private JabatanDb jabatanDb;
 
 	@Override
 	public List<JabatanModel> getAllJabatan() {
 		return jabatanDb.findAll();
 	}
-	
+
 	@Override
-	public void addJabatan(JabatanModel jabatan) {
+	public void add(JabatanModel jabatan) {
 		jabatanDb.save(jabatan);
-	}
-	
-	@Override
-	public JabatanModel findJabatanById(long id) {
-		return jabatanDb.findById(id).get();
+		
 	}
 
 	@Override
-	public void deleteById(long id) {
-		jabatanDb.deleteById(id);
+	public JabatanModel findJabatanById(long idJabatan) {
+		return jabatanDb.findById(idJabatan).get();
 	}
+
+	@Override
+	public void deleteById(long idJabatan) {
+		jabatanDb.deleteById(idJabatan);
+		
+	}
+	
 	
 }

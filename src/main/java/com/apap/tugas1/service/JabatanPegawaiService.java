@@ -2,13 +2,10 @@ package com.apap.tugas1.service;
 
 import java.util.List;
 
-import com.apap.tugas1.model.JabatanModel;
 import com.apap.tugas1.model.JabatanPegawaiModel;
 
 public interface JabatanPegawaiService {
 
-	List<JabatanPegawaiModel> getAllJabatanPegawai();
+	List<JabatanPegawaiModel> getAll();
 
-	List<JabatanPegawaiModel> findByJabatan(JabatanModel jabatan);
-	
 }
